@@ -4,17 +4,6 @@
  * Módulo: Programación Móvil — 3° Bachillerato Técnico (UETS)
  * Docente: Ing. Milton Velásquez
  * ============================================================================
- * 
- * 📖 CONTEXTO / MISIÓN (BASE PARA EL SCREENCAST):
- * Este reto simula el motor de compras y facturación para la futura app móvil
- * del Bar Salesiano de la UETS.
- * 
- * 🛠️ INSTRUCCIONES:
- * 1. Revisa las interfaces de datos del pedido y catálogo.
- * 2. Implementa la función `calcularTotalesPedido` aplicando las reglas de negocio
- *    (subtotal acumulado, descuento estudiantil del 10% si subtotal >= $10.00, IVA del 15%).
- * 3. Ejecuta en tu terminal: `pnpm run start:04` para verificar los tests y
- *    ver tu ticket digital impreso en pantalla.
  */
 
 // ============================================================================
@@ -58,24 +47,31 @@ export interface ResumenFinanciero {
 // ============================================================================
 // 2. Función de Lógica Financiera
 // ============================================================================
-/**
- * TODO: Implementa `calcularTotalesPedido`.
- * Reglas de Negocio:
- * 1. `subtotal`: Sumar (precioUnitario * cantidad) de cada elemento en `pedido.detalles`.
- * 2. `descuentoEstudiantil`: Si `subtotal >= 10.00`, calcular el 10% (subtotal * 0.10). Si es menor, 0.
- * 3. `baseImponible`: subtotal - descuentoEstudiantil.
- * 4. `iva15`: baseImponible * 0.15.
- * 5. `totalPagar`: baseImponible + iva15.
- * 
- * Todos los valores numéricos deben retornar redondeados a 2 decimales: Number(val.toFixed(2)).
- */
+
 export function calcularTotalesPedido(pedido: PedidoMovil): ResumenFinanciero {
-  // 👇 TODO: Escribe tu lógica de cálculo aquí y reemplaza el objeto por defecto:
+  let subtotal: number = 0;
+  let descuentoEstudiantil: number = 0;
+  let baseImponible: number = 0;
+  let iva15: number = 0;
+  let totalPagar: number = 0;
+  for (const item of pedido.detalles) {
+    subtotal = subtotal + item.producto.precioUnitario * item.cantidad;
+  }
+  if (subtotal >= 10) {
+    descuentoEstudiantil = subtotal * 0.1;
+} else {
+    descuentoEstudiantil = 0;
+}
+
+  baseImponible = subtotal - descuentoEstudiantil;
+  iva15 = baseImponible * 0.15;
+  totalPagar = baseImponible + iva15;
+
   return {
-    subtotal: 0,
-    descuentoEstudiantil: 0,
-    iva15: 0,
-    totalPagar: 0
+    subtotal: Number(subtotal.toFixed(2)),
+    descuentoEstudiantil: Number(descuentoEstudiantil.toFixed(2)),
+    iva15: Number(iva15.toFixed(2)),
+    totalPagar: Number(totalPagar.toFixed(2))
   };
 }
 
